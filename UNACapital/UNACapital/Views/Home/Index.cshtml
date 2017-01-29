@@ -1,0 +1,37 @@
+﻿@model UNACapital.ViewModels.IndexVM
+
+    @{
+        ViewBag.Title = "Index";
+    }
+
+    <h2>Index</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Data</td>
+                <td>Número</td>
+                <td>Quantidade de Ações</td>
+                <td>Valor R$</td>
+                <td>Doador</td>
+                <td>Tomador</td>
+                <td>Cotação Média</td>
+                <td>Taxa média 3 dias</td>
+                <td>Posição em Aberto</td>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>@Model.CBLC.Date.ToString("dd/MM/yyyy")</td>
+                <td>@Model.CBLC.NumberContracts</td>
+                <td>@Model.CBLC.AmountActions</td>
+                <td>@Model.CBLC.Value</td>
+                <td>@Model.CBLC.Donator</td>
+                <td>@Model.CBLC.Taker</td>
+                <td>@Model.CBLC.Cotation</td>
+                <td>@Model.CBLC.ThreeDays</td>
+                <td>@Model.CBLC.OpenPosition</td>
+            </tr>
+        </tbody>
+    </table>
