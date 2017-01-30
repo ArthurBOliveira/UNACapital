@@ -26,6 +26,8 @@ namespace UNACapital.BLL
                 date = date.AddDays(-1);
             }
 
+            result.Reverse();
+
             return result;
         }
 

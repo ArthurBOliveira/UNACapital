@@ -14,9 +14,7 @@ namespace UNACapital.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            List<CDI> CDI = CDIReader.CDIRead(5);
-
-            IndexVM ivm = new IndexVM(CBLCReader.Read("01ABEV3"));
+            IndexVM ivm = new IndexVM(CBLCReader.Read("01ABEV3"), CDIReader.CDIRead(10));
 
             return View(ivm);
         }

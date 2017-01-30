@@ -4,7 +4,7 @@
         ViewBag.Title = "Index";
     }
 
-    <h2>Index</h2>
+    <h2>Tabela CBLC</h2>
 
     <table class="table">
         <thead>
@@ -35,3 +35,45 @@
             </tr>
         </tbody>
     </table>
+
+    <br />
+    <br />
+
+    <div id="chartContainer"></div>
+
+    <script type="text/javascript">
+
+    $(function () {
+        var chart = new CanvasJS.Chart("chartContainer", {
+            theme: "theme2",
+            zoomEnabled: true,
+            animationEnabled: true,
+            title: {
+                text: "Cotação média e CDI da ação 01ABEV3"
+            },
+            axisY: {
+                prefix: "R$ "
+            },
+            toolTip: {
+                shared: true,
+                content: "<span><strong>{x}</strong></span> <span>R${y}</span> "
+            },
+            data: [
+            {
+                type: "line",
+
+                dataPoints: [
+                    @foreach (UNACapital.Models.CDI c in Model.CDIs)
+                    {
+                        <Text>{x: new Date(@c.Date.Year, @c.Date.Month, @c.Date.Day) , y: @c.Number},</Text>
+                    }
+                ],
+
+                //You can add dynamic data from the controller as shown below. Check the controller and uncomment the line which generates dataPoints.
+                //dataPoints: @Html.Raw(ViewBag.DataPoints),
+            }
+            ]
+        });
+        chart.render();
+    });
+</script>
