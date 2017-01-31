@@ -1,9 +1,9 @@
 ﻿@model UNACapital.ViewModels.IndexVM
 
-    @{
-        ViewBag.Title = "Index";
-    }
-
+@{
+    ViewBag.Title = "Index";
+}
+<div>
     <h2>Tabela CBLC</h2>
 
     <table class="table">
@@ -35,13 +35,53 @@
             </tr>
         </tbody>
     </table>
+</div>
 
-    <br />
-    <br />
+<br />
+<br />
 
-    <div id="chartContainer"></div>
+<h2 id="lblAction">Ação: @Model.Action</h2>
+<br />
 
-    <script type="text/javascript">
+<div class="col-lg-12" style="padding: 0;">
+    <div class="col-lg-4" style="padding: 0;">
+        <label>Ação</label>
+        <input type="text" id="txtAction" style="width: 100%;" />
+    </div>
+    <div class="col-lg-4" style="padding: 0;">
+        <label>Data Inicial</label>
+        <input type="text" id="txtStartDate" style="width: 100%;" />
+    </div>
+    <div class="col-lg-4" style="padding: 0;">
+        <label>Data Final</label>
+        <input type="text" id="txtEndDate" style="width: 100%;" />
+    </div>
+</div>
+
+<br />
+<br />
+
+<div class="col-lg-12" style="padding: 0;">
+    <input type="button" onclick="search();" value="Pesquisar" class="btn" />
+</div>
+
+
+<br />
+<br />
+
+<div id="chartContainer"></div>
+
+<div id="container"></div>
+
+<script type="text/javascript">
+
+    function search(){
+        var action = $("#txtAction").val();
+        var startDate = $("#txtStartDate").val();
+        var endDate = $("#txtEndDate").val();
+
+        window.location.replace("/home/index?currAction=" + action + "&startDate=" + startDate + "&endDate=" + endDate + "");
+    }
 
     $(function () {
         var chart = new CanvasJS.Chart("chartContainer", {
@@ -49,23 +89,35 @@
             zoomEnabled: true,
             animationEnabled: true,
             title: {
-                text: "Cotação média e CDI da ação 01ABEV3"
+                text: "@Model.Action"
             },
             axisY: {
                 prefix: "R$ "
             },
             toolTip: {
                 shared: true,
-                content: "<span><strong>{x}</strong></span> <span>R${y}</span> "
+                content: "<span><strong>{name}</strong></span> : <span>{x}</span> - <span>R${y}</span> "
             },
             data: [
             {
                 type: "line",
-
+                name: "CDI",
+                showInLegend: true,
                 dataPoints: [
                     @foreach (UNACapital.Models.CDI c in Model.CDIs)
                     {
-                        <Text>{x: new Date(@c.Date.Year, @c.Date.Month, @c.Date.Day) , y: @c.Number},</Text>
+                        <Text>{x: new Date(@c.Date.Year, (@c.Date.Month - 1), @c.Date.Day) , y: @c.Number},</Text>
+                        }
+                ],
+            },
+            {
+                type: "line",
+                name: "Cotação",
+                showInLegend: true,
+                dataPoints: [
+                    @foreach (UNACapital.Models.CDI c in Model.CDIs)
+                    {
+                        <Text>{x: new Date(@c.Date.Year, (@c.Date.Month - 1), @c.Date.Day) , y: (@c.Number - 1000000)},</Text>
                     }
                 ],
 

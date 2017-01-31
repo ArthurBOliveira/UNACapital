@@ -31,6 +31,25 @@ namespace UNACapital.BLL
             return result;
         }
 
+        public static List<CDI> CDIRead(DateTime startDate, DateTime endDate)
+        {
+            List<CDI> result = new List<CDI>();
+
+            while(startDate <= endDate)
+            {
+                int aux = ReadFromURL(startDate.ToString("yyyyMMdd"));
+
+                if (aux != 0)
+                    result.Add(new CDI(startDate, aux));
+
+                startDate = startDate.AddDays(1);
+            }
+
+            result.Reverse();
+
+            return result;
+        }
+
         private static int ReadFromURL(string date)
         {
             try
