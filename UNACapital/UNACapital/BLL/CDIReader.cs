@@ -25,13 +25,19 @@ namespace UNACapital.BLL
             }
 
             //result.Reverse();
-
-            float max = result[0].Number;
-
-            foreach (CDI c in result)
+            try
             {
-                c.Percentage = (float)(c.Number * 100.0 / max);
-                c.Percentage = float.Parse(c.Percentage.ToString("0.00"));
+                float max = result[0].Number;
+
+                foreach (CDI c in result)
+                {
+                    c.Percentage = (float)(c.Number * 100.0 / max);
+                    c.Percentage = float.Parse(c.Percentage.ToString("0.00"));
+                }
+            }
+            catch
+            {
+
             }
 
             return result;
