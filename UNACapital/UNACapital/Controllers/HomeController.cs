@@ -20,17 +20,27 @@ namespace UNACapital.Controllers
 
             return View(ivm);
         }*/
-        public ActionResult Index(string currAction, DateTime? startDate = null, DateTime? endDate = null)
+        public ActionResult Index(string currAction, string type, long? startDate = null, long? endDate = null)
         {
             DateTime start, end;
             string action;
 
-            start = startDate.HasValue ? startDate.Value : DateTime.Now.AddDays(-5);
-            end = endDate.HasValue ? endDate.Value : DateTime.Now;
+            DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-            action = string.IsNullOrEmpty(currAction) ? "01ABEV3" : currAction;
+            if (startDate.HasValue)
+                start = epoch.AddMilliseconds(startDate.Value);
+            else
+                start = DateTime.Now.AddMonths(-1).Date;
 
-            IndexVM ivm = new IndexVM(action, CBLCReader.Read(action), CDIReader.CDIRead(start, end), YahooAPIReader.YahooAPIRead(action, start, end));
+            if (endDate.HasValue)
+                end = epoch.AddMilliseconds(endDate.Value);
+            else
+                end = DateTime.Now.Date;
+
+            action = string.IsNullOrEmpty(currAction) ? "ABEV3" : currAction;
+            type = string.IsNullOrEmpty(type) ? "Diário" : type;
+
+            IndexVM ivm = new IndexVM(action, CBLCReader.Read(action), CDIReader.CDIRead(start, end), YahooAPIReader.YahooAPIRead(action, start, end, type));
 
             return View(ivm);
         }

@@ -26,7 +26,7 @@
                 <td>@Model.CBLC.Date.ToString("dd/MM/yyyy")</td>
                 <td>@Model.CBLC.NumberContracts</td>
                 <td>@Model.CBLC.AmountActions</td>
-                <td>@Model.CBLC.Value</td>
+                <td>@Model.CBLC.Value.ToString("0,00")</td>
                 <td>@Model.CBLC.Donator</td>
                 <td>@Model.CBLC.Taker</td>
                 <td>@Model.CBLC.Cotation</td>
@@ -44,17 +44,24 @@
 <br />
 
 <div class="col-lg-12" style="padding: 0;">
-    <div class="col-lg-4" style="padding: 0;">
+    <div class="col-lg-3" style="padding: 0;">
         <label>Ação</label>
-        <input type="text" id="txtAction" style="width: 100%;" />
+        <input type="text" id="txtAction" style="width: 100%;" placeholder="Ex: DTEX3, ITUB4, PETR3..." />
     </div>
-    <div class="col-lg-4" style="padding: 0;">
+    <div class="col-lg-3" style="padding: 0;">  
         <label>Data Inicial</label>
-        <input type="text" id="txtStartDate" style="width: 100%;" />
+        <input type="text" id="txtStartDate" style="width: 100%;" placeholder="dd/MM/yyyy" />
     </div>
-    <div class="col-lg-4" style="padding: 0;">
+    <div class="col-lg-3" style="padding: 0;">
         <label>Data Final</label>
-        <input type="text" id="txtEndDate" style="width: 100%;" />
+        <input type="text" id="txtEndDate" style="width: 100%;" placeholder="dd/MM/yyyy"/>
+    </div>
+    <div class="col-lg-3" style="padding: 0;">
+        <label>Tipo</label>
+        <select  class="form-control" style="100%" id="selType">
+            <option selected="selected">Diário</option>
+            <option>Semanal</option>
+        </select>
     </div>
 </div>
 
@@ -65,11 +72,10 @@
     <input type="button" onclick="search();" value="Pesquisar" class="btn" />
 </div>
 
-
 <br />
 <br />
 
-<div id="chartContainer"></div>
+<div style="height: 500px;" id="chartContainer"></div>
 
 <div id="container"></div>
 
@@ -77,10 +83,21 @@
 
     function search(){
         var action = $("#txtAction").val();
-        var startDate = $("#txtStartDate").val();
-        var endDate = $("#txtEndDate").val();
+        var startDateTxt = $("#txtStartDate").val();
+        var endDateTxt = $("#txtEndDate").val();
+        var type = $("#selType").val();
 
-        window.location.replace("/home/index?currAction=" + action + "&startDate=" + startDate + "&endDate=" + endDate + "");
+        var date1 = new Date(startDateTxt);
+        var startMilliseconds = date1.getTime(); 
+
+        var date2 = new Date(endDateTxt);
+        var endMilliseconds = date2.getTime(); 
+
+        if(startMilliseconds >= endMilliseconds) {
+            alert("Data inicial precisa ser menor que data final");
+        } else{
+            window.location.replace("/home/index?currAction=" + action + "&startDate=" + startMilliseconds + "&endDate=" + endMilliseconds + "&type=" + type);
+        }        
     }
 
     $(function () {
@@ -92,11 +109,11 @@
                 text: "@Model.Action"
             },
             axisY: {
-                prefix: "R$ "
+                suffix: "%"
             },
             toolTip: {
                 shared: true,
-                content: "<span><strong>{name}</strong></span> : <span>{x}</span> - <span>R${y}</span> "
+                content: "<span><strong>{name}</strong></span> : <span>{x}</span> - <span>{y}%</span>"
             },
             data: [
             {
@@ -106,8 +123,8 @@
                 dataPoints: [
                     @foreach (UNACapital.Models.CDI c in Model.CDIs)
                     {
-                        <Text>{x: new Date(@c.Date.Year, (@c.Date.Month - 1), @c.Date.Day) , y: @c.Number},</Text>
-                        }
+                        <Text>{x: new Date(@c.Date.Year, (@c.Date.Month - 1), @c.Date.Day) , y: (@c.Percentage.ToString("0.00").Replace(',', '.')) },</Text>
+                    }
                 ],
             },
             {
@@ -117,7 +134,7 @@
                 dataPoints: [
                     @foreach (UNACapital.Models.Cotation co in Model.Cotations)
                     {
-                        <Text>{x: new Date(@co.Date.Year, (@co.Date.Month - 1), @co.Date.Day) , y: (@co.Number)},</Text>
+                        <Text>{x: new Date(@co.Date.Year, (@co.Date.Month - 1), @co.Date.Day) , y: (@co.Percentage.ToString("0.00").Replace(',', '.'))},</Text>
                     }
                 ],
 
@@ -129,3 +146,64 @@
         chart.render();
     });
 </script>
+
+<br />
+<br />
+
+<div class="col-lg-12">
+    <div class="col-lg-6">
+        <h2>Tabela CDI</h2>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <td>Data</td>
+                    <td>Valor</td>
+                    <td>Porcentagem</td>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (UNACapital.Models.CDI cdi in Model.CDIs)
+                {
+                    <tr>
+                        <td>@cdi.Date.ToString("dd/MM/yyyy")</td>
+                        <td>@cdi.Number.ToString()</td>
+                        <td>@cdi.Percentage.ToString()%</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-lg-6">
+        <h2>Tabela Cotação</h2>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <td>Data</td>
+                    <td>Valor</td>
+                    <td>Porcentagem</td>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (UNACapital.Models.Cotation cot in Model.Cotations)
+                {
+                    <tr>
+                        <td>@cot.Date.ToString("dd/MM/yyyy")</td>
+                        <td>R$ @cot.Number.ToString()</td>
+                        <td>@cot.Percentage.ToString()%</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+

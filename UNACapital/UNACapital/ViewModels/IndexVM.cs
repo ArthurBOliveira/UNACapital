@@ -21,6 +21,8 @@ namespace UNACapital.ViewModels
             CBLC = cblc;
             CDIs = cdis;
             Cotations = cotations;
+
+            CBLC.Cotation = cotations.Last<Cotation>().Number;
         }
     }
 }

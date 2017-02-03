@@ -9,6 +9,7 @@ namespace UNACapital.Models
     {
         private DateTime date;
         private int number;
+        private float percentage;
 
         #region Properties
         public DateTime Date
@@ -36,15 +37,29 @@ namespace UNACapital.Models
                 number = value;
             }
         }
+
+        public float Percentage
+        {
+            get
+            {
+                return percentage;
+            }
+
+            set
+            {
+                percentage = value;
+            }
+        }
         #endregion
 
         #region Constructors
         public CDI() { }
 
-        public CDI(DateTime date, int number)
+        public CDI(DateTime date, int number, float percentage)
         {
             Date = date;
             Number = number;
+            Percentage = percentage;
         }
         #endregion
     }

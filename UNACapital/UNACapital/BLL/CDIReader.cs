@@ -10,42 +10,29 @@ namespace UNACapital.BLL
 {
     public class CDIReader
     {
-        public static List<CDI> CDIRead(int days)
-        {
-            List<CDI> result = new List<CDI>();
-
-            DateTime date = DateTime.Now;
-
-            for(int i = 0; i < days; i++)
-            {
-                int aux = ReadFromURL(date.ToString("yyyyMMdd"));
-
-                if (aux != 0)
-                    result.Add(new CDI(date, aux));
-
-                date = date.AddDays(-1);
-            }
-
-            result.Reverse();
-
-            return result;
-        }
-
         public static List<CDI> CDIRead(DateTime startDate, DateTime endDate)
         {
             List<CDI> result = new List<CDI>();
 
-            while(startDate <= endDate)
+            while (startDate <= endDate)
             {
                 int aux = ReadFromURL(startDate.ToString("yyyyMMdd"));
 
                 if (aux != 0)
-                    result.Add(new CDI(startDate, aux));
+                    result.Add(new CDI(startDate, aux, 100));
 
                 startDate = startDate.AddDays(1);
             }
 
-            result.Reverse();
+            //result.Reverse();
+
+            float max = result[0].Number;
+
+            foreach (CDI c in result)
+            {
+                c.Percentage = (float)(c.Number * 100.0 / max);
+                c.Percentage = float.Parse(c.Percentage.ToString("0.00"));
+            }
 
             return result;
         }

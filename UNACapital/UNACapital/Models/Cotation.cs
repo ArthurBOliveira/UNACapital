@@ -9,6 +9,7 @@ namespace UNACapital.Models
     {
         private DateTime date;
         private float number;
+        private float percentage;
 
         #region Properties
         public DateTime Date
@@ -28,19 +29,6 @@ namespace UNACapital.Models
         {
             get
             {
-                return Number1;
-            }
-
-            set
-            {
-                Number1 = value;
-            }
-        }
-
-        public float Number1
-        {
-            get
-            {
                 return number;
             }
 
@@ -49,15 +37,29 @@ namespace UNACapital.Models
                 number = value;
             }
         }
+
+        public float Percentage
+        {
+            get
+            {
+                return percentage;
+            }
+
+            set
+            {
+                percentage = value;
+            }
+        }
         #endregion
 
         #region Contructors
         public Cotation() { }
 
-        public Cotation(DateTime date, float number)
+        public Cotation(DateTime date, float number, float percentage)
         {
             Date = date;
             Number = number;
+            Percentage = percentage;
         }
         #endregion
     }
