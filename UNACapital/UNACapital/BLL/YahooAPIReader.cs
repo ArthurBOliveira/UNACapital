@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Web;
 using UNACapital.Models;
-using YSQ.core.Historical;
 
 namespace UNACapital.BLL
 {
@@ -15,16 +15,37 @@ namespace UNACapital.BLL
         {
             List<Cotation> cotations = new List<Cotation>();
 
-            //Create the historical price service
-            HistoricalPriceService historical_price_service = new HistoricalPriceService();
+            string url = "http://ichart.yahoo.com/table.csv?s=" + action + "&a=" + startDate.Day.ToString() + "&b=" + startDate.Month.ToString() + "&c=" + startDate.Year.ToString() + "&d=" + endDate.Day.ToString() + "&e=" + endDate.Month.ToString() + "&f=" + endDate.Year.ToString() + "&g=d";
 
-            //Get the historical prices
-            IEnumerable<HistoricalPrice> historical_prices = historical_price_service.Get(action, startDate, endDate, Period.Daily);
-
-            //Use the prices!
-            foreach (HistoricalPrice price in historical_prices)
+            try
             {
-                cotations.Add(new Cotation(price.Date, price.Price));
+                WebRequest webRequest = WebRequest.Create(url);
+                WebResponse response = webRequest.GetResponse();
+                Stream content = response.GetResponseStream();
+                StreamReader reader = new StreamReader(content);
+
+                string csv = reader.ReadToEnd();
+                string[] lines = Regex.Split(csv, "\r\n|\r|\n");
+
+                DateTime date;
+                float number;
+
+                int delimiter = (int)(endDate - startDate).TotalDays;
+
+                for (int i = 1; i <= delimiter; i++)
+                {
+                    string[] aux = lines[i].Split(',');
+
+                    date = DateTime.Parse(aux[0]);
+                    number = float.Parse(aux[4].Replace('.', ','));
+
+                    cotations.Add(new Cotation(date, number));
+                }
+                
+            }
+            catch (Exception e)
+            {
+                
             }
 
             return cotations;

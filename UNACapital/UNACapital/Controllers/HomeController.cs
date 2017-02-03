@@ -30,7 +30,7 @@ namespace UNACapital.Controllers
 
             action = string.IsNullOrEmpty(currAction) ? "01ABEV3" : currAction;
 
-            IndexVM ivm = new IndexVM(action, CBLCReader.Read(action), CDIReader.CDIRead(start, end), YahooAPIReader.YahooAPIRead(currAction, start, end));
+            IndexVM ivm = new IndexVM(action, CBLCReader.Read(action), CDIReader.CDIRead(start, end), YahooAPIReader.YahooAPIRead(action, start, end));
 
             return View(ivm);
         }

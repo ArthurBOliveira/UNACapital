@@ -115,9 +115,9 @@
                 name: "Cotação",
                 showInLegend: true,
                 dataPoints: [
-                    @foreach (UNACapital.Models.CDI c in Model.CDIs)
+                    @foreach (UNACapital.Models.Cotation co in Model.Cotations)
                     {
-                        <Text>{x: new Date(@c.Date.Year, (@c.Date.Month - 1), @c.Date.Day) , y: (@c.Number - 1000000)},</Text>
+                        <Text>{x: new Date(@co.Date.Year, (@co.Date.Month - 1), @co.Date.Day) , y: (@co.Number)},</Text>
                     }
                 ],
 

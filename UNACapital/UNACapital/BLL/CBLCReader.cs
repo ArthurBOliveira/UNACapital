@@ -16,12 +16,12 @@ namespace UNACapital.BLL
         {
             CBLC result;
 
-            result = new CBLC(ReadFromURL(actionId), actionId);
+            result = new CBLC(ReadFromURL(), actionId);
 
             return result;
         }
 
-        private static string ReadFromURL(string actionId)
+        private static string ReadFromURL()
         {
             WebRequest webRequest = WebRequest.Create(@"http://www.cblc.com.br/cblc/consultas/Arquivos/DBTCER9999.txt");
             WebResponse response = webRequest.GetResponse();

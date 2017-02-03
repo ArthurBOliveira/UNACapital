@@ -8,7 +8,7 @@ namespace UNACapital.Models
     public class Cotation
     {
         private DateTime date;
-        private decimal number;
+        private float number;
 
         #region Properties
         public DateTime Date
@@ -24,7 +24,20 @@ namespace UNACapital.Models
             }
         }
 
-        public decimal Number
+        public float Number
+        {
+            get
+            {
+                return Number1;
+            }
+
+            set
+            {
+                Number1 = value;
+            }
+        }
+
+        public float Number1
         {
             get
             {
@@ -41,7 +54,7 @@ namespace UNACapital.Models
         #region Contructors
         public Cotation() { }
 
-        public Cotation(DateTime date, decimal number)
+        public Cotation(DateTime date, float number)
         {
             Date = date;
             Number = number;
