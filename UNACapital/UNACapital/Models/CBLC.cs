@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
 using System.Web;
 
@@ -18,6 +19,7 @@ namespace UNACapital.Models
         private float cotation; // ?
         private float threeDays; // ?
         private int openPosition; // ?
+        private string name; // NOME RESUMIDO DA EMPRESA X(30) 23 52
 
         #region Properties
         public DateTime Date
@@ -136,6 +138,19 @@ namespace UNACapital.Models
                 openPosition = value;
             }
         }
+
+        public string Name
+        {
+            get
+            {
+                return name;
+            }
+
+            set
+            {
+                name = value;
+            }
+        }
         #endregion
 
         #region Constructors
@@ -157,6 +172,7 @@ namespace UNACapital.Models
                 }
             }
 
+            name = actionLine.Substring(22, 30).Trim();
             numberContracts = int.Parse(actionLine.Substring(52, 10));
             amountActions = int.Parse(actionLine.Substring(62, 11));
             value = float.Parse(actionLine.Substring(73, 17) + "," + actionLine.Substring(91, 2));
