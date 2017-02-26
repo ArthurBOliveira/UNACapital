@@ -11,7 +11,7 @@ namespace UNACapital.BLL
 {
     public static class Notification
     {
-        public static string Send()
+        public static string Send(Models.Notification n)
         {
             var request = WebRequest.Create("https://onesignal.com/api/v1/notifications") as HttpWebRequest;
 
@@ -19,16 +19,16 @@ namespace UNACapital.BLL
             request.Method = "POST";
             request.ContentType = "application/json; charset=utf-8";
 
-            request.Headers.Add("authorization", "Basic OTQ3MTdiZjMtMjlkNC00OTkyLWJjMzEtZmI0NDA5MWQ2NjY1");
+            request.Headers.Add("authorization", "Basic " + n.RestKey);
 
             JavaScriptSerializer serializer = new JavaScriptSerializer();
             object obj = new
             {
-                app_id = "b9c9c9f2-1a0f-4fd7-b472-0dc927831253",
-                contents = new { en = "English Content", pt = "Conteúdo em Português" },
-                headings = new { en = "English Title", pt = "Título em Português" },
-                subtitle = new { en = "English Subtitle", pt = "Subtítulo em Português" },
-                //url = "http://xn--aesagora-s0a4l.azurewebsites.net/home/index?currAction=PETR3&startDate=1483322400000&endDate=NaN&type=Di%C3%A1rio",
+                app_id = n.ApiKey,
+                contents = new { en = "English Content", pt = n.Content },
+                headings = new { en = "English Title", pt = n.Title },
+                subtitle = new { en = "English Subtitle", pt = n.SubTitle },
+                url = n.Url,
                 included_segments = new string[] { "All" }
             };
             string param = serializer.Serialize(obj);
@@ -53,8 +53,7 @@ namespace UNACapital.BLL
             }
             catch (WebException ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex.Message);
-                System.Diagnostics.Debug.WriteLine(new StreamReader(ex.Response.GetResponseStream()).ReadToEnd());
+                responseContent = ex.Message;
             }
 
             return responseContent;
