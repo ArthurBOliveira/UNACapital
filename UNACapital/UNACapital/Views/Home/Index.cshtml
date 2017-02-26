@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Index";
 }
-<div>
+<div class="table-responsive">
     <h2>Tabela CBLC</h2>
 
     <table class="table">
@@ -40,6 +40,8 @@
 <br />
 <br />
 
+<input id="txtError" type="hidden" value="@Model.Error"/>
+
 <h2>Nome: @Model.CBLC.Name</h2>
 <h3 id="lblAction">Código da Ação: @Model.Action</h3>
 <br />
@@ -51,11 +53,11 @@
     </div>
     <div class="col-lg-3" style="padding: 0;">  
         <label>Data Inicial</label>
-        <input type="text" id="txtStartDate" style="width: 100%;" placeholder="dd/MM/yyyy" />
+        <input type="text" id="txtStartDate" class="datepicker" style="width: 100%;" placeholder="dd/MM/yyyy" />
     </div>
     <div class="col-lg-3" style="padding: 0;">
         <label>Data Final</label>
-        <input type="text" id="txtEndDate" style="width: 100%;" placeholder="dd/MM/yyyy"/>
+        <input type="text" id="txtEndDate" class="datepicker" style="width: 100%;" placeholder="dd/MM/yyyy"/>
     </div>
     <div class="col-lg-3" style="padding: 0;">
         <label>Tipo</label>
@@ -81,6 +83,13 @@
 <div id="container"></div>
 
 <script type="text/javascript">
+
+    $( document ).ready(function() {
+        var error = $("#txtError").val();
+
+        if(error != "")
+            alert(error);
+    });
 
     function search(){
         var action = $("#txtAction").val();
@@ -152,7 +161,7 @@
 <br />
 
 <div class="col-lg-12">
-    <div class="col-lg-6">
+    <div class="col-lg-6 table-responsive">
         <h2>Tabela CDI</h2>
 
         <table class="table">
@@ -179,7 +188,7 @@
         </table>
     </div>
 
-    <div class="col-lg-6">
+    <div class="col-lg-6 table-responsive">
         <h2>Tabela Cotação</h2>
 
         <table class="table">

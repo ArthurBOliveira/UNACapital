@@ -3,7 +3,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Prova Una Capital</title>
+    <link rel="icon" href="~/Dollar.png">
+    <title>Ações Agora</title>
 
     <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -12,6 +13,59 @@
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
     <script src="http://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+    @* OneSignal Scripts *@
+    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async='async'></script>
+    <script>
+        var OneSignal = window.OneSignal || [];
+        OneSignal.push(["init", {
+            appId: "e4382907-3bca-4bea-9b1b-debeaa047dd7",
+            autoRegister: true, /* Set to true to automatically prompt visitors */
+            subdomainName: 'acoesagora',
+            /*
+            subdomainName: Use the value you entered in step 1.4: http://imgur.com/a/f6hqN
+            */
+            httpPermissionRequest: {
+                enable: true
+            },
+            notifyButton: {
+                enable: true /* Set to false to hide */
+            },
+            promptOptions: {
+                /* Change bold title, limited to 30 characters */
+                siteName: 'Ações Agora',
+                /* Subtitle, limited to 90 characters */
+                actionMessage: "Nos permita mostrar notificações sobre a variação das principais ações",
+                /* Example notification title */
+                exampleNotificationTitle: 'Petrobras - PETR3',
+                /* Example notification message */
+                exampleNotificationMessage: '- R$ 0,55 (R$ 15,96)',
+                /* Text below example notification, limited to 50 characters */
+                exampleNotificationCaption: 'Você pode cancelar a subscrição a qualquer momento.',
+                /* Accept button text, limited to 15 characters */
+                acceptButtonText: "Permitir",
+                /* Cancel button text, limited to 15 characters */
+                cancelButtonText: "Não Obrigado",
+                safari_web_id: 'web.onesignal.auto.02093de6-f6ab-427c-bf3a-c7ddb76bfc75'
+            },
+            welcomeNotification: {
+                disable: false,
+                title: 'Bem-vindo',
+                message: 'Obrigado por se inscrever.'
+            },
+            httpPermissionRequest: {
+                enable: true,
+                modalTitle: 'Fique por dentro',
+                modalMessage: 'Seja alertado sempre que algo grande aconteça.',
+                modalButtonText: 'Eu quero saber mais!'
+            }
+            /*notifyButton: {
+                enable: false,
+                position: 'bottom-left'
+            }*/
+        }
+        ]);
+    </script>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -22,11 +76,10 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Prova Una Capital", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Ações Agora", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                </ul>
+                <ul class="nav navbar-nav"></ul>
             </div>
         </div>
     </div>
@@ -35,7 +88,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Ações Agora</p>
         </footer>
     </div>
 </body>
